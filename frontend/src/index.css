@@ -1,0 +1,470 @@
+/* Палитра и базовые элементы интерфейса. Все цвета и размеры — здесь:
+   ни одна страница не задаёт свой оттенок синего и свою высоту кнопки. */
+:root {
+  /* Бренд */
+  --c-primary:        #3498db;
+  --c-primary-dark:   #2980b9;
+  --c-primary-light:  #ebf5fb;
+
+  /* Семантика */
+  --c-success:        #27ae60;
+  --c-success-light:  #eafaf1;
+  --c-warning:        #f39c12;
+  --c-warning-strong: #e67e22;
+  --c-warning-light:  #fef5e7;
+  --c-danger:         #c0392b;
+  --c-danger-light:   #fdedec;
+
+  /* Нейтральные */
+  --c-text:           #2c3e50;
+  --c-text-secondary: #7f8c8d;
+  --c-text-muted:     #95a5a6;
+  --c-border:         #e6e9ec;
+  --c-bg:             #f5f6fa;
+  --c-bg-card:        #ffffff;
+  --c-bg-hover:       #f8f9fa;
+
+  --radius-sm: 4px;
+  --radius:    6px;
+  --radius-lg: 8px;
+
+  /* Единая высота элементов управления: поля фильтров, селекты, кнопки-пресеты.
+     Без неё соседние контролы в шапке расходятся на несколько пикселей. */
+  --control-h: 34px;
+
+  --sidebar-w: 230px;
+
+  /* Ровно два кегля на весь интерфейс: основной 14px и мелкий 12px.
+     Заголовки — отдельная иерархия. */
+  --font-sm: 12px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  color: #333;
+  background: var(--c-bg);
+}
+
+h1, h2, h3 { margin: 0 0 16px; }
+h1 { font-size: 22px; }
+h2 { font-size: 18px; }
+h3 { font-size: 15px; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+th, td {
+  padding: 9px 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+}
+
+th {
+  background: #f8f9fa;
+  font-weight: 600;
+  font-size: var(--font-sm);
+  color: #555;
+  white-space: nowrap;
+}
+
+tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: #fafafa; }
+
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.nowrap { white-space: nowrap; }
+.muted { color: var(--c-text-secondary); }
+.small { font-size: var(--font-sm); }
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+button:hover { opacity: 0.85; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-primary { background: var(--c-primary); color: white; }
+.btn-success { background: var(--c-success); color: white; }
+.btn-danger  { background: #e74c3c; color: white; }
+.btn-warning { background: var(--c-warning); color: white; }
+
+/* Вторичная кнопка — контурная бело-голубая. Серая заливка читалась бы
+   как «выключено» и выбивалась из палитры. */
+.btn-secondary {
+  background: #fff;
+  color: var(--c-primary-dark);
+  border: 1px solid var(--c-primary);
+}
+.btn-secondary:hover:not(:disabled) { background: var(--c-primary-light); opacity: 1; }
+.btn-secondary:disabled { background: #fff; color: var(--c-text-muted); border-color: var(--c-border); }
+
+/* Полноразмерная кнопка той же высоты, что поле ввода рядом. */
+.btn-primary, .btn-secondary, .btn-success, .btn-danger, .btn-warning {
+  min-height: var(--control-h);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Компактная кнопка — единые 28px везде (иконки и действия в строках таблиц). */
+.btn-sm {
+  padding: 0 10px;
+  font-size: var(--font-sm);
+  min-height: 28px;
+  height: 28px;
+}
+
+.btn-control-h { height: var(--control-h); padding: 0 12px; }
+
+/* Сегментный переключатель: одна рамка на группу, общая высота с полями. */
+.segmented {
+  display: inline-flex;
+  height: var(--control-h);
+  border: 1px solid #ddd;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.segmented > button {
+  height: 100%;
+  border: none;
+  border-radius: 0;
+  padding: 0 14px;
+  background: #fff;
+  color: var(--c-text);
+  white-space: nowrap;
+}
+.segmented > button.active { background: var(--c-primary); color: #fff; }
+.segmented > button.active:hover { opacity: 1; }
+.segmented.compact > button { padding: 0 9px; font-size: var(--font-sm); }
+
+input, select, textarea {
+  border: 1px solid #ddd;
+  border-radius: var(--radius-sm);
+  padding: 7px 10px;
+  font-size: 14px;
+  font-family: inherit;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+/* Текстовые поля и списки — одной высоты во всей системе. Чекбоксы, радио и
+   выбор файла исключены: у них своя метрика, textarea задаёт высоту строками. */
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+select { height: var(--control-h); }
+
+input:focus, select:focus, textarea:focus { border-color: var(--c-primary); }
+
+/* Системный select на macOS серый и выбивается из палитры: рисуем белое поле
+   с голубой стрелкой. Где важен и раскрытый список — компонент StyledSelect. */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%233498db' d='M1 1.5 6 6.5l5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 9px center;
+  background-size: 10px;
+  padding-right: 28px;
+  color: var(--c-text);
+  cursor: pointer;
+}
+select:hover:not(:disabled) { border-color: var(--c-primary); }
+select:disabled { background-color: var(--c-bg-hover); color: var(--c-text-muted); cursor: not-allowed; }
+
+.form-group { margin-bottom: 14px; }
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  font-size: var(--font-sm);
+  color: #555;
+}
+.form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14px; }
+.form-row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.card {
+  background: white;
+  border-radius: 6px;
+  padding: 18px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  margin-bottom: 16px;
+}
+.card h2 { margin-bottom: 12px; }
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: var(--font-sm);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Статусы заявки. Цвета совпадают с колонкой color справочника request_statuses:
+   если менять — менять в обоих местах. */
+.badge-CREATED            { background: #eaf4fd; color: #2471a3; }
+.badge-ACCEPTED           { background: #d5e8d4; color: #1e8449; }
+.badge-PLANNED            { background: #dae8fc; color: #2980b9; }
+.badge-IN_PROGRESS        { background: #fff3cd; color: #856404; }
+.badge-DONE               { background: #d4edda; color: #155724; }
+.badge-CUSTOMER_ACCEPTED  { background: #cce5ff; color: #004085; }
+.badge-ACT_CREATED        { background: #e8d5f0; color: #5b2c83; }
+.badge-ACT_SIGNED         { background: #2c3e50; color: #fff; }
+.badge-CANCELLED          { background: #f8d7da; color: #721c24; }
+
+/* Прочие состояния: позиции работ, компенсации, наряды. */
+.badge-neutral { background: var(--c-bg-hover); color: var(--c-text-secondary); }
+.badge-info    { background: var(--c-primary-light); color: var(--c-primary-dark); }
+.badge-ok      { background: var(--c-success-light); color: #1e8449; }
+.badge-warn    { background: var(--c-warning-light); color: #8a5b12; }
+.badge-alert   { background: var(--c-danger-light); color: var(--c-danger); }
+
+.chip {
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: var(--font-sm);
+  line-height: 1;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Переключатель-галка в ряду кнопок — контрол в рост кнопки, а не голый checkbox. */
+.toggle-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: var(--control-h);
+  padding: 0 12px;
+  border: 1px solid #ddd;
+  border-radius: var(--radius-sm);
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--c-text);
+  white-space: nowrap;
+}
+.toggle-box:hover { border-color: var(--c-primary); }
+.toggle-box input[type="checkbox"] {
+  width: 16px; height: 16px; margin: 0;
+  accent-color: var(--c-primary);
+  cursor: pointer;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  border-radius: 8px;
+  padding: 22px;
+  min-width: 360px;
+  max-width: 560px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  /* Длинные формы скроллятся внутри окна, а не уходят под край экрана. */
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal.large { max-width: 860px; min-width: 600px; }
+.modal.wide  { max-width: 1100px; min-width: 700px; }
+.modal h2 { margin-bottom: 18px; }
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.error-msg { color: #e74c3c; font-size: var(--font-sm); margin-top: 8px; }
+
+.pagination {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 16px;
+  justify-content: center;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  align-items: flex-end;
+}
+.filters .form-group { margin-bottom: 0; min-width: 160px; }
+
+/* Шапка страницы прилипает к верху окна: список длинный, и возвращаться
+   к фильтрам прокруткой неудобно. */
+.page-sticky-head {
+  position: sticky;
+  top: 0;
+  z-index: 300;
+  background: var(--c-bg);
+  padding: 10px 0 8px;
+  margin-bottom: 8px;
+  box-shadow: 0 6px 10px -8px rgba(0, 0, 0, 0.25);
+}
+.page-head-extra { margin-top: 10px; }
+
+/* Центральная группа фильтров — все контролы одной высоты. */
+.page-filters > input,
+.page-filters > label,
+.page-filters > button { height: var(--control-h); }
+
+.loading { color: #888; padding: 20px 0; text-align: center; }
+.empty { color: #aaa; padding: 24px 0; text-align: center; font-style: italic; }
+
+.actions { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.actions .btn-sm {
+  min-width: 32px; height: 28px; padding: 0 8px;
+  display: inline-flex; align-items: center; justify-content: center; line-height: 1;
+}
+.actions-divider {
+  width: 1px; align-self: stretch; min-height: 26px;
+  background: var(--c-border); margin: 0 4px;
+}
+
+/* Универсальный блок-уведомление: подсказки, предупреждения, ошибки. */
+.notice {
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  font-size: var(--font-sm);
+  border-left: 4px solid var(--c-text-muted);
+  background: var(--c-bg-hover);
+  color: var(--c-text);
+  margin-bottom: 12px;
+}
+.notice.notice-info    { border-color: var(--c-primary);        background: var(--c-primary-light); }
+.notice.notice-success { border-color: var(--c-success);        background: var(--c-success-light); }
+.notice.notice-warning { border-color: var(--c-warning-strong); background: var(--c-warning-light); }
+.notice.notice-danger  { border-color: var(--c-danger);         background: var(--c-danger-light); }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Плитки показателей на дашборде: одинаковая высота независимо от длины подписи. */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.tile {
+  background: #fff;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  min-height: 78px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+}
+.tile:hover { border-color: var(--c-primary); background: var(--c-primary-light); }
+.tile.static { cursor: default; }
+.tile.static:hover { border-color: var(--c-border); background: #fff; }
+.tile-value { font-size: 24px; font-weight: 700; line-height: 1; }
+.tile-label { font-size: var(--font-sm); color: var(--c-text-secondary); }
+.tile.alert .tile-value { color: var(--c-danger); }
+.tile.warn .tile-value { color: var(--c-warning-strong); }
+
+/* Двухколоночная карточка сущности: слева основное, справа боковая панель. */
+.detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 1200px) {
+  .detail-layout { grid-template-columns: 1fr; }
+}
+
+/* Лента событий заявки. */
+.timeline { display: flex; flex-direction: column; gap: 8px; }
+.timeline-item {
+  border-left: 3px solid var(--c-border);
+  padding: 4px 0 4px 10px;
+}
+.timeline-item.type-STATUS { border-left-color: var(--c-primary); }
+.timeline-item.type-WAIT   { border-left-color: var(--c-warning-strong); }
+.timeline-item.type-PROBLEM{ border-left-color: var(--c-danger); }
+.timeline-item.type-DOC    { border-left-color: var(--c-success); }
+.timeline-meta { font-size: var(--font-sm); color: var(--c-text-secondary); }
+
+/* Строка «ключ — значение» в карточках. */
+.kv { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 4px 12px; }
+.kv dt { font-size: var(--font-sm); color: var(--c-text-secondary); padding: 3px 0; }
+.kv dd { margin: 0; padding: 3px 0; }
+
+/* Вкладки внутри страницы: справочники, аналитика, карточка проекта. */
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--c-border);
+  margin-bottom: 16px;
+  overflow-x: auto;
+}
+.tabs > button {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  padding: 8px 14px;
+  color: var(--c-text-secondary);
+  white-space: nowrap;
+}
+.tabs > button.active {
+  color: var(--c-primary-dark);
+  border-bottom-color: var(--c-primary);
+  font-weight: 600;
+}
+
+/* Таблица внутри карточки скроллится сама, а страница не едет вбок. */
+.table-scroll { overflow-x: auto; }
+
+/* Значение, правящееся кликом по нему самому. Намёк даёт наведение. */
+.inline-edit {
+  cursor: pointer;
+  border-radius: 3px;
+  border-bottom: 1px dashed transparent;
+  transition: background 0.12s, border-color 0.12s;
+}
+.inline-edit:hover { background: var(--c-primary-light); border-bottom-color: var(--c-primary); }

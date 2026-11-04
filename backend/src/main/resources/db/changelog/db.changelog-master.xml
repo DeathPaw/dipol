@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Мастер-файл миграций. Changelog'и разбиты по модулям ERP в том порядке,
+  в котором между ними идут внешние ключи: ядро → мастер-данные → проекты →
+  транспорт → заявки → планирование → исполнение → материалы → ФОТ →
+  финансы → документы → ТБ → РК-3 → справочные данные.
+
+  Правило: уже применённые changeset'ы НЕ редактируются. Любое изменение —
+  новый файл changes/NNN_*.sql, подключённый в конец этого списка.
+-->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
+
+    <include file="db/changelog/changes/001_core.sql"/>
+    <include file="db/changelog/changes/002_master_data.sql"/>
+    <include file="db/changelog/changes/003_projects.sql"/>
+    <include file="db/changelog/changes/004_transport.sql"/>
+    <include file="db/changelog/changes/005_requests.sql"/>
+    <include file="db/changelog/changes/006_planning.sql"/>
+    <include file="db/changelog/changes/007_execution.sql"/>
+    <include file="db/changelog/changes/008_materials.sql"/>
+    <include file="db/changelog/changes/009_payroll.sql"/>
+    <include file="db/changelog/changes/010_finance.sql"/>
+    <include file="db/changelog/changes/011_documents.sql"/>
+    <include file="db/changelog/changes/012_safety.sql"/>
+    <include file="db/changelog/changes/013_rk3.sql"/>
+    <include file="db/changelog/changes/014_seed_reference.sql"/>
+    <include file="db/changelog/changes/015_seed_project_configs.sql"/>
+    <include file="db/changelog/changes/016_seed_documents.sql"/>
+
+</databaseChangeLog>

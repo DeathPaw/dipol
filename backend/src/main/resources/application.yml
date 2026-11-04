@@ -1,0 +1,58 @@
+# Секреты — только через env-переменные `${VAR:default}`. В репозитории лежат
+# исключительно dev-дефолты: они попадают во все клоны, боевых паролей тут быть не должно.
+
+spring:
+  application:
+    name: dipol-erp
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/dipol_db}
+    username: ${SPRING_DATASOURCE_USERNAME:dipol}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+    driver-class-name: org.postgresql.Driver
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+  jackson:
+    # Весь API — snake_case: БД → Java → JSON → TypeScript без переименований.
+    property-naming-strategy: SNAKE_CASE
+    default-property-inclusion: non_null
+    # Без явной зоны Jackson сериализует java.sql.Date в UTC, и первое число
+    # месяца уезжает на последнее число предыдущего — отчёты за период
+    # начинают расходиться с источником на один день.
+    time-zone: ${APP_TIME_ZONE:Europe/Moscow}
+    # В Jackson 3 (Spring Boot 4) ключ write-dates-as-timestamps больше не
+    # существует, поэтому формат дат оставлен по умолчанию: ISO-строка со
+    # смещением. Фронт разбирает её через Date и печатает в локали.
+
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 50MB
+
+# Первый вход. Пока таблица users пуста, SecurityConfig заводит этого
+# суперпользователя; дальше пользователями управляют из интерфейса.
+app:
+  admin:
+    username: ${APP_ADMIN_USERNAME:admin}
+    password: ${APP_ADMIN_PASSWORD:foxy}
+  files:
+    # Внутреннее файловое хранилище (US-K4): один каталог, в ERP доступ через слоты сущностей.
+    dir: ${APP_FILES_DIR:./var/files}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+
+server:
+  port: ${SERVER_PORT:8080}
+
+logging:
+  level:
+    liquibase: INFO
